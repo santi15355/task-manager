@@ -1,2 +1,2 @@
 ### Hexlet tests and linter status:
-[![Actions Status](https://github.com/santi15355/java-project-73/workflows/hexlet-check/badge.svg)](https://github.com/santi15355/java-project-73/actions)
+[![Actions Status](https://github.com/santi15355/java-project-73/workflows/hexlet-check/badge.svg)](https://github.com/santi15355/java-project-73/actions)   [![Maintainability](https://api.codeclimate.com/v1/badges/f3b8e7c4fa2363262043/maintainability)](https://codeclimate.com/github/santi15355/java-project-73/maintainability)   [![Test Coverage](https://api.codeclimate.com/v1/badges/f3b8e7c4fa2363262043/test_coverage)](https://codeclimate.com/github/santi15355/java-project-73/test_coverage)
