@@ -28,6 +28,11 @@ application {
 	mainClass = 'hexlet.code.AppApplication'
 }
 
+wrapper {
+	gradleVersion = '7.4'
+	distributionType = Wrapper.DistributionType.ALL
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
