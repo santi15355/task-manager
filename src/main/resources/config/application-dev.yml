@@ -2,6 +2,8 @@ server:
   error:
     include-stacktrace: on_param
 
+base-url: /api
+
 spring:
   datasource:
     username: "sa"

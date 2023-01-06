@@ -2,6 +2,8 @@ server:
   error:
     include-stacktrace: never
 
+base-url: /api
+
 spring:
   devtools:
     restart:
