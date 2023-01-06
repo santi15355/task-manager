@@ -3,7 +3,6 @@ package hexlet.code.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.component.JWTHelper;
 import hexlet.code.dto.UserDto;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
@@ -13,11 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.util.Map;
-
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @Component
@@ -44,8 +40,6 @@ public class TestUtils {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private JWTHelper jwtHelper;
 
     public static String asJson(final Object object) throws JsonProcessingException {
         return MAPPER.writeValueAsString(object);
@@ -84,18 +78,6 @@ public class TestUtils {
         return perform(request);
     }
 
-    public String buildToken(Object userId) {
-        return jwtHelper.expiring(Map.of(SPRING_SECURITY_FORM_USERNAME_KEY, userId));
-    }
-
-    public ResultActions perform(final MockHttpServletRequestBuilder request, final String byUser) throws Exception {
-        final Long userId = userRepository.findByEmail(byUser)
-                .map(User::getId)
-                .orElse(null);
-
-        final String token = buildToken(userId);
-        return performWithToken(request, token);
-    }
 
     public ResultActions performWithToken(final MockHttpServletRequestBuilder request,
                                           final String token) throws Exception {

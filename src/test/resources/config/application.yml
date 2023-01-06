@@ -6,7 +6,7 @@ spring:
 
   jpa:
     datasource:
-      url: jdbc:h2:./taskManager
+      url: jdbc:h2:./taskManagerTest
       username: sa
       password:
     show-sql: true
