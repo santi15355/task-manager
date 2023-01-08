@@ -84,7 +84,7 @@ public class UserControllerIT {
         utils.regDefaultUser().andExpect(status().isCreated());
         assertEquals(1, userRepository.count());
     }
-    
+
     @Test
     public void getUserById() throws Exception {
         utils.regDefaultUser();
