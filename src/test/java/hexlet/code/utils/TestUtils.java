@@ -129,14 +129,14 @@ public class TestUtils {
      * @param byUser  - string data of user
      * @return system userDetails object
      */
-    public ResultActions perform(final MockHttpServletRequestBuilder request, final String byUser) throws Exception {
-        final Long userId = userRepository.findByEmail(byUser)
-                .map(User::getId)
-                .orElse(null);
 
-        final String token = buildToken(userId);
-        return performWithToken(request, token);
+    public ResultActions perform(final MockHttpServletRequestBuilder request, final String byUser) throws Exception {
+        final String token = jwtHelper.expiring(Map.of("username", byUser));
+        request.header(AUTHORIZATION, token);
+
+        return perform(request);
     }
+
 
     /**
      * Performs the request.
