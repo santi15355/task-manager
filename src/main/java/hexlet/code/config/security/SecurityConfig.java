@@ -62,8 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         );
 
         this.authenticatedUrls = new OrRequestMatcher(
-                new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH, PUT.toString()),
-                new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH, DELETE.toString()),
                 new AntPathRequestMatcher(baseUrl + TASK_STATUS_CONTROLLER_PATH + "/**", GET.toString()),
                 new AntPathRequestMatcher(baseUrl + TASK_STATUS_CONTROLLER_PATH + "/**", POST.toString()),
                 new AntPathRequestMatcher(baseUrl + TASK_STATUS_CONTROLLER_PATH + "/**", PUT.toString()),
