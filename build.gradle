@@ -57,6 +57,7 @@ dependencies {
 			'org.springframework.boot:spring-boot-starter-validation',
 			'org.springframework.boot:spring-boot-starter-security',
 			'org.springframework.security:spring-security-jwt:1.0.4.RELEASE',
+			'javax.xml.bind:jaxb-api:2.3.1',
 			//'org.springframework:spring-core:4.3.30.RELEASE',
 			'io.jsonwebtoken:jjwt:0.9.1',
 			// Зависимость для swagger
@@ -115,12 +116,6 @@ liquibase {
 }
 
 
-
-
-/*tasks.named('test') {
-	useJUnitPlatform()
-}*/
-
 test {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
@@ -137,6 +132,35 @@ jacocoTestReport {
 jacoco {
 	toolVersion = "0.8.7"
 }
+
+frontend {
+	nodeVersion = '16.13.1'
+	installScript = 'install'
+	assembleScript = 'run build'
+	packageJsonDirectory = file("${projectDir}/frontend")
+}
+
+def configFrontendTasks = {
+	inputs.files(fileTree("$projectDir/frontend").exclude('build', 'node_modules'))
+	outputs.dir("$buildDir/resources/main/static")
+}
+
+assembleFrontend {
+	configure configFrontendTasks
+
+	doLast {
+		copy {
+			from "$projectDir/frontend/build"
+			into "$buildDir/resources/main/static"
+		}
+	}
+}
+
+installFrontend {
+	configure configFrontendTasks
+}
+
+processResources.dependsOn assembleFrontend
 
 task stage(dependsOn: ['clean', 'installDist'])
 installDist.mustRunAfter clean

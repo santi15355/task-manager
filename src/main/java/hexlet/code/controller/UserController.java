@@ -51,6 +51,12 @@ public class UserController {
         return userService.createNewUser(dto);
     }
 
+    /**
+     * Get lis of users.
+     *
+     * @return List of Users
+     */
+
     @ApiResponses(@ApiResponse(responseCode = "200", content =
     @Content(schema = @Schema(implementation = User.class))
     ))

@@ -3,10 +3,11 @@ base-url: "/api"
 spring:
   application:
     name: taskManager
+    web:
 
   jpa:
     datasource:
-      url: jdbc:h2:./taskManagerTest
+      url: jdbc:h2:./taskManager
       username: sa
       password:
     show-sql: true
