@@ -3,9 +3,9 @@ package hexlet.code.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.config.SpringConfigForIT;
-import hexlet.code.dto.TaskStatusDto;
-import hexlet.code.model.TaskStatus;
-import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.dto.LabelDto;
+import hexlet.code.model.Label;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.utils.TestUtils;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -22,8 +22,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static hexlet.code.config.SpringConfigForIT.TEST_PROFILE;
-import static hexlet.code.controller.TaskStatusController.ID;
-import static hexlet.code.utils.TestUtils.TASK_STATUS_CONTROLLER_PATH;
+import static hexlet.code.controller.LabelController.ID;
+import static hexlet.code.utils.TestUtils.LABEL_CONTROLLER_PATH;
 import static hexlet.code.utils.TestUtils.TEST_USERNAME;
 import static hexlet.code.utils.TestUtils.asJson;
 import static hexlet.code.utils.TestUtils.fromJson;
@@ -42,13 +42,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles(TEST_PROFILE)
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = SpringConfigForIT.class)
-public class TaskStatusControllerIT {
+public class LabelControllerIT {
 
     @Autowired
     private TestUtils utils;
 
     @Autowired
-    private TaskStatusRepository taskStatusRepository;
+    private LabelRepository labelRepository;
 
     @BeforeEach
     public void before() throws Exception {
@@ -62,41 +62,41 @@ public class TaskStatusControllerIT {
 
     @Test
     public void getAll() throws Exception {
-        final var response = utils.perform(get(TASK_STATUS_CONTROLLER_PATH), TEST_USERNAME)
+        final var response = utils.perform(get(LABEL_CONTROLLER_PATH), TEST_USERNAME)
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
 
-        final List<TaskStatus> taskStatuses = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final List<Label> labels = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
-        final List<TaskStatus> expected = taskStatusRepository.findAll();
-        Assertions.assertThat(taskStatuses)
+        final List<Label> expected = labelRepository.findAll();
+        Assertions.assertThat(labels)
                 .containsAll(expected);
     }
 
     @Test
-    public void createNewStatus() throws Exception {
-        final TaskStatusDto statusToSave = new TaskStatusDto("test status");
+    public void createNewLabel() throws Exception {
+        final LabelDto labelToSave = new LabelDto("test label");
 
-        final var request = buildRequestForSave(statusToSave);
+        final var request = buildRequestForSave(labelToSave);
 
         final var response = utils.perform(request, TEST_USERNAME)
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse();
 
-        final TaskStatus savedTaskStatus = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final Label savedLabel = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertThat(taskStatusRepository.getById(savedTaskStatus.getId())).isNotNull();
+        assertThat(labelRepository.getById(savedLabel.getId())).isNotNull();
     }
 
     @Disabled("For now active only positive tests")
     @Test
     public void createNewValidationFail() throws Exception {
-        final TaskStatusDto statusToSave = new TaskStatusDto();
+        final LabelDto labelToSave = new LabelDto();
 
-        final var request = buildRequestForSave(statusToSave);
+        final var request = buildRequestForSave(labelToSave);
 
         utils.perform(request, TEST_USERNAME)
                 .andExpect(status().isUnprocessableEntity());
@@ -104,10 +104,10 @@ public class TaskStatusControllerIT {
 
     @Disabled("For now active only positive tests")
     @Test
-    public void failToTwiceCreateSameStatus() throws Exception {
-        final TaskStatusDto statusToSave = new TaskStatusDto("test status");
+    public void failToTwiceCreateSameLabel() throws Exception {
+        final LabelDto labelToSave = new LabelDto("test label");
 
-        final var request = buildRequestForSave(statusToSave);
+        final var request = buildRequestForSave(labelToSave);
 
         utils.perform(request, TEST_USERNAME)
                 .andExpect(status().isCreated());
@@ -116,51 +116,51 @@ public class TaskStatusControllerIT {
     }
 
     @Test
-    public void updateStatus() throws Exception {
-        final TaskStatusDto status = new TaskStatusDto("test status");
+    public void updateLabel() throws Exception {
+        final LabelDto label = new LabelDto("test label");
 
-        final var requestToSave = buildRequestForSave(status);
+        final var requestToSave = buildRequestForSave(label);
 
         final var response = utils.perform(requestToSave, TEST_USERNAME)
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse();
 
-        final long id = fromJson(response.getContentAsString(), new TypeReference<TaskStatus>() {
+        final long id = fromJson(response.getContentAsString(), new TypeReference<Label>() {
         }).getId();
 
-        status.setName("new name");
-        final var requestToUpdate = put(TASK_STATUS_CONTROLLER_PATH + ID, id)
-                .content(asJson(status))
+        label.setName("new name");
+        final var requestToUpdate = put(LABEL_CONTROLLER_PATH + ID, id)
+                .content(asJson(label))
                 .contentType(APPLICATION_JSON);
 
         utils.perform(requestToUpdate, TEST_USERNAME)
                 .andExpect(status().isOk());
 
-        final TaskStatus updatedTaskStatus = taskStatusRepository.findById(id)
+        final Label updatedLabel = labelRepository.findById(id)
                 .get();
 
-        assertEquals(status.getName(), updatedTaskStatus.getName());
+        assertEquals(label.getName(), updatedLabel.getName());
     }
 
     @Disabled("For now active only positive tests")
     @Test
-    public void updateStatusFails() throws Exception {
-        final TaskStatusDto status = new TaskStatusDto("test status");
+    public void updateLabelFails() throws Exception {
+        final LabelDto label = new LabelDto("test label");
 
-        final var requestToSave = buildRequestForSave(status);
+        final var requestToSave = buildRequestForSave(label);
 
         final var response = utils.perform(requestToSave, TEST_USERNAME)
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse();
 
-        final long id = fromJson(response.getContentAsString(), new TypeReference<TaskStatus>() {
+        final long id = fromJson(response.getContentAsString(), new TypeReference<Label>() {
         }).getId();
 
-        status.setName("");
-        final var requestToUpdate = put(TASK_STATUS_CONTROLLER_PATH + ID, id)
-                .content(asJson(status))
+        label.setName("");
+        final var requestToUpdate = put(LABEL_CONTROLLER_PATH + ID, id)
+                .content(asJson(label))
                 .contentType(APPLICATION_JSON);
 
         utils.perform(requestToUpdate, TEST_USERNAME)
@@ -168,30 +168,28 @@ public class TaskStatusControllerIT {
     }
 
     @Test
-    public void deleteStatus() throws Exception {
-        final TaskStatusDto status = new TaskStatusDto("test status");
+    public void deleteLabel() throws Exception {
+        final LabelDto label = new LabelDto("test label");
 
-        final var requestToSave = buildRequestForSave(status);
+        final var requestToSave = buildRequestForSave(label);
 
         final var response = utils.perform(requestToSave, TEST_USERNAME)
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse();
 
-        final long id = fromJson(response.getContentAsString(), new TypeReference<TaskStatus>() {
+        final long id = fromJson(response.getContentAsString(), new TypeReference<Label>() {
         }).getId();
 
-        utils.perform(delete(TASK_STATUS_CONTROLLER_PATH + ID, id), TEST_USERNAME)
+        utils.perform(delete(LABEL_CONTROLLER_PATH + ID, id), TEST_USERNAME)
                 .andExpect(status().isOk());
 
-        assertFalse(taskStatusRepository.existsById(id));
+        assertFalse(labelRepository.existsById(id));
     }
 
-    private MockHttpServletRequestBuilder buildRequestForSave(
-            final TaskStatusDto status
-    ) throws JsonProcessingException {
-        return post(TASK_STATUS_CONTROLLER_PATH)
-                .content(asJson(status))
+    private MockHttpServletRequestBuilder buildRequestForSave(final LabelDto label) throws JsonProcessingException {
+        return post(LABEL_CONTROLLER_PATH)
+                .content(asJson(label))
                 .contentType(APPLICATION_JSON);
     }
 

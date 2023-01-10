@@ -10,12 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration()
-@ComponentScan({
-
-// UPDATE TO YOUR PROJECT PACKAGE
-        "hexlet.code.app"
-
-})
+@ComponentScan({"hexlet.code.app"})
 public class RollbarConfig {
     @Value("${rollbar_token:}")
     private String rollbarToken;
@@ -26,6 +21,7 @@ public class RollbarConfig {
 
     /**
      * Return the rollbar configuration.
+     *
      * @return rollbar configuration.
      */
     @Bean
@@ -35,8 +31,6 @@ public class RollbarConfig {
     }
 
     private Config getRollbarConfigs(String accessToken) {
-
-        // Reference ConfigBuilder.java for all the properties you can set for Rollbar
         return RollbarSpringConfigBuilder.withAccessToken(accessToken)
                 .environment("development")
                 .enabled(activeProfile == "prod")

@@ -4,6 +4,10 @@ server:
 
 base-url: /api
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
 spring:
   datasource:
     username: "sa"

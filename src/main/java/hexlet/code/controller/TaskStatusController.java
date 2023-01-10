@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +29,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @AllArgsConstructor
 @RestController
-@SecurityRequirement(name = "javainuseapi")
 @RequestMapping("${base-url}" + TASK_STATUS_CONTROLLER_PATH)
 public class TaskStatusController {
 
@@ -114,6 +112,5 @@ public class TaskStatusController {
     public void delete(@PathVariable final long id) {
         taskStatusRepository.deleteById(id);
     }
-
 }
 

@@ -11,9 +11,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskStatusDto {
-    private static final int MIN_V = 1;
 
     @NotBlank
-    @Size(min = MIN_V)
+    @Size(min = 1)
     private String name;
 }
