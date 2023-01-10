@@ -9,4 +9,4 @@
 
 [Работа приложения](https://java-project-73-production-ef8c.up.railway.app/)
 
-[Задокументированные методы API (контроллеров для пользователей, задач и меток)](https://java-project-73-production-ef8c.up.railway.app/swagger-ui)
+[Задокументированные методы API (контроллеров для пользователей, задач и меток)](https://java-project-73-production-ef8c.up.railway.app/swagger.html)

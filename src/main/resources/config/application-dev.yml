@@ -6,7 +6,7 @@ base-url: /api
 
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
+    path: /swagger.html
 
 spring:
   datasource:
