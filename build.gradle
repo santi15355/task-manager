@@ -89,7 +89,7 @@ dependencies {
 			'org.springframework.boot:spring-boot-starter-test',
 			'com.tobedevoured.modelcitizen:spring:0.8.3'
 	)
-}
+}//@Builder
 
 diffChangeLog {
 	dependsOn compileJava

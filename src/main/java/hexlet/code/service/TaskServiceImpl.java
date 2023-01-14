@@ -60,13 +60,14 @@ public class TaskServiceImpl implements TaskService {
                 .map(Label::new)
                 .collect(Collectors.toSet());
 
-        return Task.builder()
-                .author(author)
-                .executor(executor)
-                .taskStatus(taskStatus)
-                .labels(labels)
-                .name(dto.getName())
-                .description(dto.getDescription())
-                .build();
+        final Task task = new Task();
+        task.setAuthor(author);
+        task.setExecutor(executor);
+        task.setLabels(labels);
+        task.setTaskStatus(taskStatus);
+        task.setName(dto.getName());
+        task.setDescription(dto.getDescription());
+
+        return task;
     }
 }

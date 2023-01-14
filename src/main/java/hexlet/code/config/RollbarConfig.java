@@ -1,4 +1,4 @@
-package hexlet.code.rollbar;
+package hexlet.code.config;
 
 import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.Config;

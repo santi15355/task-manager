@@ -107,11 +107,13 @@ public class TaskControllerIT {
     public void getAll() throws Exception {
 
         final List<Task> expected = IntStream.range(1, 10)
-                .mapToObj(i -> Task.builder()
-                        .author(utils.getUserByEmail(TEST_USERNAME))
-                        .description("description" + i)
-                        .name("name" + i)
-                        .build()
+                .mapToObj(i -> {
+                            Task task = new Task();
+                            task.setName("task name" + i);
+                            task.setDescription("desc" + i);
+                            task.setAuthor(utils.getUserByEmail(TEST_USERNAME));
+                            return task;
+                        }
                 ).toList();
 
         taskRepository.saveAll(expected);
@@ -129,12 +131,11 @@ public class TaskControllerIT {
     @Test
     public void getById() throws Exception {
 
-        final Task expected = taskRepository.save(Task.builder()
-                .author(utils.getUserByEmail(TEST_USERNAME))
-                .description("description")
-                .name("name")
-                .build()
-        );
+        final Task expected = new Task();
+        expected.setName("task name");
+        expected.setDescription("desc");
+        expected.setAuthor(utils.getUserByEmail(TEST_USERNAME));
+        taskRepository.save(expected);
 
         final var request = get(TASK_CONTROLLER_PATH + ID, expected.getId());
 
@@ -157,13 +158,16 @@ public class TaskControllerIT {
 
         final User user = userRepository.findByEmail(TEST_USERNAME).get();
 
-        final TaskStatus taskStatus = taskStatusRepository.save(TaskStatus.builder()
-                .name("task status")
-                .build()
-        );
+        final TaskStatus taskStatus = new TaskStatus();
+        taskStatus.setName("task status");
+        taskStatusRepository.save(taskStatus);
 
-        final Label label1 = labelRepository.save(Label.builder().name("label1").build());
-        final Label label2 = labelRepository.save(Label.builder().name("label2").build());
+        final Label label1 = new Label();
+        label1.setName("label1");
+        labelRepository.save(label1);
+        final Label label2 = new Label();
+        label2.setName("label2");
+        labelRepository.save(label2);
 
         final var task = new TaskDto(
                 "test task",
@@ -193,10 +197,9 @@ public class TaskControllerIT {
     public void updateTask() throws Exception {
         final User user = userRepository.findByEmail(TEST_USERNAME).get();
 
-        final TaskStatus taskStatus = taskStatusRepository.save(TaskStatus.builder()
-                .name("task status")
-                .build()
-        );
+        final TaskStatus taskStatus = new TaskStatus();
+        taskStatus.setName("task status");
+        taskStatusRepository.save(taskStatus);
 
         final var task = new TaskDto(
                 "test task",
@@ -228,10 +231,9 @@ public class TaskControllerIT {
     public void getFiltered() throws Exception {
         final User user = userRepository.findByEmail(TEST_USERNAME).get();
 
-        final TaskStatus taskStatus = taskStatusRepository.save(TaskStatus.builder()
-                .name("task status")
-                .build()
-        );
+        final TaskStatus taskStatus = new TaskStatus();
+        taskStatus.setName("task status");
+        taskStatusRepository.save(taskStatus);
 
         final var task = new TaskDto(
                 "test name",
@@ -259,11 +261,11 @@ public class TaskControllerIT {
 
     @Test
     public void deleteTask() throws Exception {
-        final Task task = taskRepository.save(Task.builder()
-                .name("t name")
-                .description("desc")
-                .author(utils.getUserByEmail(TEST_USERNAME))
-                .build());
+        final Task task = new Task();
+        task.setName("task name");
+        task.setDescription("desc");
+        task.setAuthor(utils.getUserByEmail(TEST_USERNAME));
+        taskRepository.save(task);
 
         utils.perform(delete(TASK_CONTROLLER_PATH + ID, task.getId()), TEST_USERNAME)
                 .andExpect(status().isOk());
@@ -277,12 +279,11 @@ public class TaskControllerIT {
     public void deletePostFail() throws Exception {
         utils.regUser(new UserDto(TEST_USERNAME_2, "fname", "lname", "pwd"));
 
-        final Task task = taskRepository.save(Task.builder()
-                .name("t name")
-                .description("desc")
-                .author(utils.getUserByEmail(TEST_USERNAME_2))
-                .build()
-        );
+        final Task task = new Task();
+        task.setName("task name");
+        task.setDescription("desc");
+        task.setAuthor(utils.getUserByEmail(TEST_USERNAME));
+        taskRepository.save(task);
 
         utils.perform(delete(TASK_CONTROLLER_PATH + ID, task.getId()), TEST_USERNAME)
                 .andExpect(status().isForbidden());

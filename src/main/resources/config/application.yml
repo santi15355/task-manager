@@ -3,7 +3,7 @@ server:
 
 base-url: /api
 
-rollbar_token: 8425592a0bc94e2ab85389df2f793ad7
+rollbar_token: ${rollbar_token}
 
 spring:
   application:
