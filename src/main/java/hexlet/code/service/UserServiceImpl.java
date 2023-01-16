@@ -1,6 +1,7 @@
 package hexlet.code.service;
 
 import hexlet.code.dto.UserDto;
+import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -8,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,26 +20,17 @@ import static hexlet.code.config.security.SecurityConfig.DEFAULT_AUTHORITIES;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+
+    private final UserMapper userMapper;
 
     @Override
     public User createNewUser(final UserDto userDto) {
-        final User user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        return userRepository.save(user);
+        return userRepository.save(userMapper.createUser(userDto));
     }
 
     @Override
     public User updateUser(final Long id, final UserDto userDto) {
-        final User updatedUser = userRepository.findById(id).get();
-        updatedUser.setEmail(userDto.getEmail());
-        updatedUser.setFirstName(userDto.getFirstName());
-        updatedUser.setLastName(userDto.getLastName());
-        updatedUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        return userRepository.save(updatedUser);
+        return userRepository.save(userMapper.updateUser(id, userDto));
     }
 
     @Override

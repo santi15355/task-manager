@@ -40,13 +40,16 @@ public class Task {
     private String description;
 
     @ManyToOne
+    @JoinColumn(name = "task_status_id")
     private TaskStatus taskStatus;
 
     @NotNull
     @ManyToOne
+    @JoinColumn(name = "author_id")
     private User author;
 
     @ManyToOne
+    @JoinColumn(name = "executor_id")
     private User executor;
 
     @CreationTimestamp
