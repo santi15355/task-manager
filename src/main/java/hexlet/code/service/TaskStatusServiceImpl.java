@@ -19,12 +19,13 @@ public class TaskStatusServiceImpl implements TaskStatusService {
 
     @Override
     public TaskStatus createNewStatus(TaskStatusDto statusDto) {
-        return taskStatusRepository.save(taskStatusMapper.createNewStatus(statusDto));
+        return taskStatusRepository.save(taskStatusMapper.mapToTaskStatus(statusDto));
     }
 
     @Override
     public TaskStatus updateStatus(long id, TaskStatusDto statusDto) {
-        return taskStatusRepository.save(taskStatusMapper.updateStatus(id, statusDto));
+        final TaskStatus taskStatusToUpdate = taskStatusRepository.findById(id).get();
+        return taskStatusRepository.save(taskStatusMapper.mapToTaskStatus(taskStatusToUpdate, statusDto));
     }
 }
 

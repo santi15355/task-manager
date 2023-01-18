@@ -19,12 +19,13 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Label createNewLabel(final LabelDto labelDto) {
-        return labelRepository.save(labelMapper.createNewLabel(labelDto));
+        return labelRepository.save(labelMapper.mapToLabel(labelDto));
     }
 
     @Override
     public Label updateLabel(final long id, final LabelDto labelDto) {
-        return labelRepository.save(labelMapper.updateLabel(id, labelDto));
+        final Label labelToUpdate = labelRepository.findById(id).get();
+        return labelRepository.save(labelMapper.mapToLabel(labelToUpdate, labelDto));
     }
 
 }

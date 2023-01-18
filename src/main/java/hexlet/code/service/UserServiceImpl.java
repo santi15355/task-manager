@@ -25,12 +25,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User createNewUser(final UserDto userDto) {
-        return userRepository.save(userMapper.createUser(userDto));
+        return userRepository.save(userMapper.mapToUser(userDto));
     }
 
     @Override
     public User updateUser(final Long id, final UserDto userDto) {
-        return userRepository.save(userMapper.updateUser(id, userDto));
+        final User updatedUser = userRepository.findById(id).get();
+        return userRepository.save(userMapper.mapToUser(updatedUser, userDto));
     }
 
     @Override
